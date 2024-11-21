@@ -1,0 +1,101 @@
+.main_layout {
+}
+
+.title_box {
+    padding: 4px;
+    border-style: solid;
+    border-color: gray;
+    border-right-width: 0px;
+    border-left-width: 0px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+.title {
+    font-size: 24pt;
+    font-weight: bold;
+    padding: 4px;
+}
+.title_info {
+    font-size: 14pt;
+    font-weight: normal;
+    padding: 4px;
+}
+
+.control_box {
+    min-width: 80px;
+    padding: 0px;
+    border-style: solid;
+    border-color: gray;
+    border-right-width: 1px;
+    border-left-width: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+}
+
+.cont_scale {
+}
+
+scale  {
+    min-height: 180px;
+    min-width: 50px;
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+.enum_radio {
+    font-size: 14pt;
+    padding: 4px;
+}
+
+.toggle_box {
+    padding: 4px;
+}
+
+.send_button {
+    font-size: 16pt;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 0%;
+}
+
+.send_button_cont {
+    font-size: 16pt;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 0%;
+    border-top-width: 1px;
+    border-bottom-width: 0px;
+    border-right-width: 0px;
+    border-left-width: 0px;
+}
+
+.send_button_enum {
+    font-size: 16pt;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 0%;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-right-width: 0px;
+    border-left-width: 0px;
+}
+
+.send_button_toggle {
+    font-size: 16pt;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 0%;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-right-width: 0px;
+    border-left-width: 0px;
+}
+
