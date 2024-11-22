@@ -1,8 +1,13 @@
 .main_layout {
+    padding: 0px;
+    margin: 0px;
 }
 
 .title_box {
-    padding: 4px;
+    background-color: #404040;
+    color: white;
+    margin: 0px;
+    padding: 10px;
     border-style: solid;
     border-color: gray;
     border-right-width: 0px;
@@ -10,33 +15,26 @@
     border-top-width: 1px;
     border-bottom-width: 1px;
 }
+
 .title {
     font-size: 24pt;
     font-weight: bold;
     padding: 4px;
+    margin: 4px;
 }
+
 .title_info {
     font-size: 14pt;
     font-weight: normal;
     padding: 4px;
-}
-
-.control_box {
-    min-width: 80px;
-    padding: 0px;
-    border-style: solid;
-    border-color: gray;
-    border-right-width: 1px;
-    border-left-width: 0px;
-    border-top-width: 0px;
-    border-bottom-width: 0px;
+    margin: 4px;
 }
 
 .cont_scale {
 }
 
 scale  {
-    min-height: 180px;
+    min-height: 150px;
     min-width: 50px;
     font-size: 12pt;
     font-weight: bold;
@@ -99,3 +97,60 @@ scale  {
     border-left-width: 0px;
 }
 
+.group_expander {
+    padding: 4px;
+    margin: 8px;
+    border-style: solid;
+    border-color: gray;
+    border-width: 1px;
+}
+
+.group_expander_label {
+    font-size: 18pt;
+    font-weight: bold;
+    padding: 4px;
+    margin: 0px;
+}
+
+.row_of_groups_box {
+    padding: 0px;
+    margin: 0px;
+}
+
+.group_label {
+    color: black;
+    background-color: #e0e0e0;
+    font-size: 16pt;
+    font-weight: bold;
+    padding: 4px;
+    margin: 0px;
+    border-style: solid;
+    border-color: gray;
+    border-width: 1px;
+}
+
+.group_box {
+    margin: 0px;
+    padding: 2px;
+    border-style: solid;
+    border-color: gray;
+    border-right-width: 3px;
+    border-left-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 3px;
+}
+
+.control_box {
+    color: black;
+    background-color: white;
+    padding: 2px;
+    margin: 2px;
+    min-height: 200px;
+    min-width: 80px;
+    border-style: solid;
+    border-color: gray;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
