@@ -1,24 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Utility for sending MIDI CC messages
+Utility for sending MIDI messages
 """
 
-import sys, re, time, os, html, io
+import sys, os
 import argparse
 import logging
 import signal
 import yaml
 import mido
 import gi
-from gi.overrides import override
 
 gi.require_version("Gtk", "4.0")
-gi.require_version('Adw', '1')
-from gi.repository import Gtk, Gdk, Adw, Gio #, GdkPixbuf, GObject, Pango, GLib
+#gi.require_version('Adw', '1')
+from gi.repository import Gtk, Gdk, Gio #, Adw, GdkPixbuf, GObject, Pango, GLib
 
-
-class Defaults():
+class Defaults:
     """
     Static class for default values and logger.
     """
@@ -30,8 +28,10 @@ class Defaults():
     css_file = "./style.css"
     log_format = "%(asctime)s %(levelname)s %(module)s::%(funcName)s(%(lineno)d): %(message)s"
     log = None
+    min_widgets_per_row = 2
 
-    def initLogger():
+    @staticmethod
+    def init_logger():
         """
         Create and initialize logger object
         :return: None
@@ -44,7 +44,8 @@ class Defaults():
         log.addHandler(handler)
         Defaults.log = log
 
-    def getLogger():
+    @staticmethod
+    def get_logger():
         """
         Returns the logging object
         :return: logging object
@@ -55,10 +56,10 @@ def signal_exit(sig, frame):
     """
     Perform a clean exit.
     """
-    Defaults.getLogger().debug("caught signal %s, exiting" % signal.Signals(sig).name)
+    Defaults.get_logger().debug("caught signal %s, exiting" % signal.Signals(sig).name)
     sys.exit(0)
 
-class RowOfGroups():
+class RowOfGroups:
     def __init__(self, config=None, device=None):
         if not config or not device:
             raise ValueError("config or device  cannot be None")
@@ -77,14 +78,14 @@ class RowOfGroups():
         else:
             self.min = 2
 
-class MidiCcController():
+class MidiCcControl:
     cc_num = 0
     default_value = 0
 
     def __init__(self, config=None, device=None):
         if not config or not device:
             raise ValueError("config or device  cannot be None")
-        self.log = Defaults.getLogger()
+        self.log = Defaults.get_logger()
         self.name = config['name']
         self.cc_num = int(config['cc'])
         self.control_type = config['type']
@@ -99,7 +100,7 @@ class MidiCcController():
         else:
             log.info("trying to send a None value for CC")
 
-class MidiCCGroup():
+class MidiCCGroup:
     controls = None
     def __init__(self, config=None, device=None):
         if not config or not device:
@@ -107,14 +108,14 @@ class MidiCCGroup():
         self.name = config['name']
         self.controls = []
         for cfg in config['controls']:
-            ctrl = MidiCcController(config=cfg, device=device)
+            ctrl = MidiCcControl(config=cfg, device=device)
             self.controls.append(ctrl)
 
-class MidiDevice():
+class MidiDevice:
     def __init__(self, config=None, override_port=None):
         if not config:
             raise ValueError("config cannot be None")
-        self.log = Defaults.getLogger()
+        self.log = Defaults.get_logger()
         self.name = config['name']
         if override_port:
             self.port = override_port
@@ -154,7 +155,7 @@ class MidiDevice():
         msg = mido.Message('control_change', channel=self.channel-1, control=cc, value=value)
         self.midi_port.send(msg)
 
-class MidiRemote():
+class MidiRemote:
     def __init__(self, config=None, app=None, override_port=None):
         if not config:
             raise ValueError("config cannot be None")
@@ -162,7 +163,7 @@ class MidiRemote():
             raise ValueError("window cannot be None")
 
         self.override_port = override_port
-        self.log = Defaults.getLogger()
+        self.log = Defaults.get_logger()
         self.config = config
         self.app = app
         self.devices = []
@@ -180,52 +181,18 @@ class MidiRemote():
             except Exception as e:
                 self.log.error("could not create MidiDevice: %s" % e)
 
-class MidiRemoteWindow(Gtk.ApplicationWindow):
-    def __init__(self, config=None, width=None, height=None, css_file=None, *args, **kwargs):
-        if not config:
-            raise ValueError("config cannot be None")
-        super().__init__(*args, **kwargs)
-        self.log = Defaults.getLogger()
-        self.config = config
-        self.controller = Gtk.EventControllerKey.new()
-        self.controller.connect('key-pressed', self.on_keypress)
-        self.add_controller(self.controller)
-
-        self.set_title(Defaults.window_title)
-        if not width:
-            width = Defaults.window_width
-        if not height:
-            height = Defaults.window_height
-        self.set_default_size(width, height)
-        self.set_resizable(False)
-        #self.set_show_menubar(True)
-        self.set_decorated(True)
-        self.layout = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        self.layout.set_css_classes(['main_layout'])
-        self.set_child(self.layout)
-
-    def display_devices(self, devices):
-        for device in devices:
-            device_box = DeviceWidget(device=device)
-            self.layout.append(device_box)
-
-    def on_keypress(self, controller, keyval, keycode, state):
-        #self.log.debug("keypressed: %s %s %s" % (keyval, keycode, state))
-        ctrl_pressed = state & Gdk.ModifierType.CONTROL_MASK
-        cmd_pressed = state & Gdk.ModifierType.META_MASK
-        if keyval in (ord('q'), ord('Q')) and (ctrl_pressed or cmd_pressed):
-            self.log.debug("QUIT pressed")
-            self.close()
-
 class DeviceWidget(Gtk.Box):
     def __init__(self, device=None, *args, **kwargs):
         if not device:
             raise ValueError("control cannot be None")
         super().__init__(orientation=Gtk.Orientation.VERTICAL, *args, **kwargs)
-        self.log = Defaults.getLogger()
+        self.log = Defaults.get_logger()
         self.device = device
+        self.set_hexpand(False)
+        self.set_vexpand(False)
 
         self.device_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.device_box.set_spacing(8)
         self.device_name_label = Gtk.Label(label=device.name)
         self.device_channel_label = Gtk.Label(label="port: %s" % device.port)
         self.device_port_label = Gtk.Label(label="channel: %s" % device.channel)
@@ -235,9 +202,13 @@ class DeviceWidget(Gtk.Box):
         self.cc_spin_b = Gtk.SpinButton(adjustment=Gtk.Adjustment(value=0, step_increment=1, lower=0, upper=127))
         self.cc_value_label = Gtk.Label(label="CC Value")
         self.cc_value_spin_b = Gtk.SpinButton(adjustment=Gtk.Adjustment(value=0, step_increment=1, lower=0, upper=127))
+        self.width_label = Gtk.Label(label="Min Width")
+        self.width_spin_b = Gtk.SpinButton(adjustment=Gtk.Adjustment(value=Defaults.min_widgets_per_row, step_increment=1,
+                                                                     lower=1, upper=20))
 
         self.pc_send_b.connect('clicked', self.on_pc_clicked)
         self.cc_send_b.connect('clicked', self.on_cc_clicked)
+        self.width_spin_b.connect('value-changed', self.on_minwidth_changed)
 
         self.device_box.set_css_classes(['title_box'])
         self.device_name_label.set_css_classes(['title'])
@@ -253,11 +224,15 @@ class DeviceWidget(Gtk.Box):
         self.device_box.append(self.cc_spin_b)
         self.device_box.append(self.cc_value_label)
         self.device_box.append(self.cc_value_spin_b)
+        self.device_box.append(self.width_label)
+        self.device_box.append(self.width_spin_b)
         self.append(self.device_box)
 
+        self.rows = []
         for r in device.rows:
             row = RowWidget(r)
             self.append(row)
+            self.rows.append(row)
 
     def on_pc_clicked(self, button):
         self.device.send_pc_message(self.pc_spin_b.get_value_as_int())
@@ -265,41 +240,50 @@ class DeviceWidget(Gtk.Box):
     def on_cc_clicked(self, button):
         self.device.send_cc_message(self.cc_spin_b.get_value_as_int(), self.cc_value_spin_b.get_value_as_int())
 
+    def on_minwidth_changed(self, button):
+        for r in self.rows:
+            v = button.get_value_as_int()
+            r.box.set_min_children_per_line(v)
+
 class RowWidget(Gtk.Expander):
     def __init__(self, row=None, *args, **kwargs):
         if not row:
             raise ValueError("row cannot be None")
         super().__init__(*args, **kwargs)
+        self.row = row
         row_label = Gtk.Label(label=row.name)
         row_label.set_css_classes(['group_expander_label'])
         self.set_label_widget(label_widget=row_label)
         self.set_css_classes(['group_expander'])
         self.set_expanded(row.expand)
         self.set_resize_toplevel(True)
+        self.set_hexpand(False)
+        self.set_vexpand(False)
 
-        #self.minus_button = Gtk.Button('-')
-        #self.plus_button = Gtk.Button('+')
+        #self.box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        #self.box.set_spacing(4)
+        self.box = Gtk.FlowBox()
+        self.box.set_css_classes(['row_of_groups_box'])
+        self.box.set_selection_mode(Gtk.SelectionMode.NONE)
+        self.box.set_homogeneous(homogeneous=False)
+        self.box.set_min_children_per_line(Defaults.min_widgets_per_row)
+        #self.box.set_max_children_per_line(10)
+        self.box.set_hexpand(False)
+        self.box.set_vexpand(False)
 
-        #box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        #box.set_spacing(4)
-        box = Gtk.FlowBox()
-        box.set_css_classes(['row_of_groups_box'])
-        box.set_selection_mode(Gtk.SelectionMode.NONE)
-        box.set_homogeneous(homogeneous=False)
-        box.set_min_children_per_line(row.min)
-        # box.set_max_children_per_line(10)
-        box.set_hexpand(False)
+        self.group_widgets = []
         for group in row.groups:
             group_w = CcGroupWidget(group=group)
-            box.append(group_w)
-        self.set_child(box)
+            self.box.append(group_w)
+            self.group_widgets.append(group_w)
+        self.set_child(self.box)
 
 class CcWidget(Gtk.Box):
     def __init__(self, control=None, *args, **kwargs):
         if not control:
             raise ValueError("control cannot be None")
         super().__init__(*args, **kwargs)
-        self.log = Defaults.getLogger()
+        self.log = Defaults.get_logger()
         self.control = control
         self.send_button = Gtk.Button(label=self.control.name)
         self.send_button.connect('clicked', self.on_button_clicked)
@@ -307,6 +291,9 @@ class CcWidget(Gtk.Box):
         self.set_css_classes(['control_box'])
 
     def on_button_clicked(self, button):
+        pass
+
+    def get_value(self):
         pass
 
 class CcBasicWidget(CcWidget):
@@ -344,6 +331,9 @@ class CcEnumWidget(CcWidget):
     def on_button_clicked(self, button):
         self.control.send_message(int(self.current_selection))
 
+    def get_value(self):
+        return self.current_selection
+
 class CcToggleWidget(CcWidget):
     def __init__(self, control=None, *args, **kwargs):
         super().__init__(control=control, orientation=Gtk.Orientation.VERTICAL, *args, **kwargs)
@@ -369,6 +359,12 @@ class CcToggleWidget(CcWidget):
             self.control.send_message(value=self.control.values[True])
         else:
             self.control.send_message(value=self.control.values[False])
+
+    def get_value(self):
+        if self.switch.props.active:
+            return self.control.values[True]
+        else:
+            return self.control.values[False]
 
 class CcContinuousWidget(CcWidget):
     def __init__(self, control=None, *args, **kwargs):
@@ -396,7 +392,11 @@ class CcContinuousWidget(CcWidget):
     def on_button_clicked(self, button):
         self.control.send_message(int(self.scale.get_value()))
 
-class CcWidgetFactory():
+    def get_value(self):
+        return self.scale.get_value()
+
+class CcWidgetFactory:
+    @staticmethod
     def create_control_widget(control=None):
         if not control:
             raise ValueError("control cannot be None")
@@ -413,27 +413,75 @@ class CcGroupWidget(Gtk.Box):
         if not group:
             raise ValueError("group cannot be None")
         super().__init__(orientation=Gtk.Orientation.VERTICAL, *args, **kwargs)
+        self.log = Defaults.get_logger()
+        self.group = group
         self.set_hexpand(False)
+        self.set_vexpand(False)
         self.set_css_classes(['group_box'])
-        self.label = Gtk.Label(label=group.name)
-        self.label.set_css_classes(['group_label'])
-        self.label.set_hexpand(False)
-        self.append(self.label)
-        self.controls_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        self.controls_box.set_hexpand(False)
+        self.send_button = Gtk.Button.new_with_label(label=group.name)
+        self.send_button.connect('clicked', self.on_label_button_clicked)
+        self.send_button.set_css_classes(['group_label_button'])
+        self.append(self.send_button)
+        self.box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.box.set_hexpand(False)
+        self.box.set_vexpand(True)
+        self.control_boxes = []
         for control in group.controls:
             control_box = CcWidgetFactory.create_control_widget(control=control)
             control_box.set_css_classes(['control_box'])
             control_box.set_hexpand(False)
-            self.controls_box.append(control_box)
-        self.append(self.controls_box)
+            control_box.set_vexpand(True)
+            self.box.append(control_box)
+            self.control_boxes.append(control_box)
+        self.append(self.box)
+
+    def on_label_button_clicked(self, button):
+        for c in self.control_boxes:
+            c.control.send_message(int(c.get_value()))
+
+class MidiRemoteWindow(Gtk.ApplicationWindow):
+    def __init__(self, config=None, width=None, height=None, *args, **kwargs):
+        if not config:
+            raise ValueError("config cannot be None")
+        super().__init__(*args, **kwargs)
+        self.log = Defaults.get_logger()
+        self.config = config
+        self.controller = Gtk.EventControllerKey.new()
+        self.controller.connect('key-pressed', self.on_keypress)
+        self.add_controller(self.controller)
+
+        self.set_title(Defaults.window_title)
+        if not width:
+            width = Defaults.window_width
+        if not height:
+            height = Defaults.window_height
+        self.set_default_size(width, height)
+        self.set_resizable(False)
+        #self.set_show_menubar(True)
+        self.set_decorated(True)
+        self.layout = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.layout.set_css_classes(['main_layout'])
+        self.set_child(self.layout)
+
+    def display_devices(self, devices):
+        for device in devices:
+            device_box = DeviceWidget(device=device)
+            self.layout.append(device_box)
+
+    def on_keypress(self, controller, keyval, keycode, state):
+        #self.log.debug("keypressed: %s %s %s" % (keyval, keycode, state))
+        ctrl_pressed = state & Gdk.ModifierType.CONTROL_MASK
+        cmd_pressed = state & Gdk.ModifierType.META_MASK
+        if keyval in (ord('q'), ord('Q')) and (ctrl_pressed or cmd_pressed):
+            self.log.debug("QUIT pressed")
+            self.close()
 
 class MidiRemoteApp(Gtk.Application):
     def __init__(self, config_path=None, css_file=None, override_port=None, *args, **kwargs):
         if not config_path:
             raise ValueError("config_path cannot be None")
         super().__init__(*args, **kwargs)
-        self.log = Defaults.getLogger()
+        self.log = Defaults.get_logger()
 
         try:
             with open(config_path, 'r') as config_file:
@@ -474,6 +522,10 @@ class MidiRemoteApp(Gtk.Application):
     def on_quit(self, app):
         self.quit()
 
+def print_output_ports():
+    print("Available MIDI ports:")
+    for p in mido.get_output_names():
+        print(p)
 
 if __name__ == "__main__":
     ## set signal handlers
@@ -486,13 +538,18 @@ if __name__ == "__main__":
     arg_parser.add_argument("-c", "--config", default=Defaults.config_file, action='store', help="Config file")
     arg_parser.add_argument("-s", "--css", default=Defaults.css_file, action='store', help="CSS file")
     arg_parser.add_argument("-p", "--port", action='store', help="MIDI port")
+    arg_parser.add_argument("-l", "--list", action='store_true', help="List available output ports")
     args = arg_parser.parse_args()
 
-    Defaults.initLogger()
-    log = Defaults.getLogger()
+    Defaults.init_logger()
+    log = Defaults.get_logger()
 
     if args.verbose:
         log.setLevel(logging.DEBUG)
+
+    if args.list:
+        print_output_ports()
+        sys.exit(0)
 
     if not os.path.isfile(args.config):
         log.critical("config file not found %s" % args.config)

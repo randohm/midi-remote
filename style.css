@@ -35,7 +35,7 @@
 
 scale  {
     min-height: 150px;
-    min-width: 50px;
+    min-width: 40px;
     font-size: 12pt;
     font-weight: bold;
 }
@@ -59,7 +59,11 @@ scale  {
 }
 
 .send_button_cont {
+    /*background-image: none;*/
+    /*background-color: white;*/
+    color: black;
     font-size: 16pt;
+    font-weight: bold;
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 4px;
@@ -72,7 +76,9 @@ scale  {
 }
 
 .send_button_enum {
+    color: black;
     font-size: 16pt;
+    font-weight: bold;
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 4px;
@@ -85,7 +91,9 @@ scale  {
 }
 
 .send_button_toggle {
+    color: black;
     font-size: 16pt;
+    font-weight: bold;
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 4px;
@@ -99,7 +107,7 @@ scale  {
 
 .group_expander {
     padding: 4px;
-    margin: 8px;
+    margin: 4px;
     border-style: solid;
     border-color: gray;
     border-width: 1px;
@@ -117,16 +125,17 @@ scale  {
     margin: 0px;
 }
 
-.group_label {
+.group_label_button {
     color: black;
     background-color: #e0e0e0;
     font-size: 16pt;
     font-weight: bold;
     padding: 4px;
-    margin: 0px;
+    margin: 2px;
     border-style: solid;
     border-color: gray;
     border-width: 1px;
+    border-radius: 0%;
 }
 
 .group_box {
@@ -145,8 +154,8 @@ scale  {
     background-color: white;
     padding: 2px;
     margin: 2px;
-    min-height: 200px;
-    min-width: 80px;
+    /*min-height: 180px;*/
+    min-width: 72px;
     border-style: solid;
     border-color: gray;
     border-right-width: 1px;
