@@ -1,9 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Utility for sending MIDI messages
 """
-
 import sys, os
 import argparse
 import logging
@@ -13,51 +10,26 @@ import mido
 import gi
 
 gi.require_version("Gtk", "4.0")
-#gi.require_version('Adw', '1')
-from gi.repository import Gtk, Gdk, Gio #, Adw, GdkPixbuf, GObject, Pango, GLib
+from gi.repository import Gtk, Gdk, Gio
 
-class Defaults:
-    """
-    Static class for default values and logger.
-    """
+LOG_FORMAT = "%(asctime)s %(levelname)s %(module)s::%(funcName)s(%(lineno)d): %(message)s"
+log = logging.getLogger(__name__)
+log.setLevel(logging.INFO)
+formatter = logging.Formatter(LOG_FORMAT)
+handler = logging.StreamHandler(sys.stdout)
+handler.setFormatter(formatter)
+log.addHandler(handler)
+
+class Constants:
     application_id = "com.github.randohm.midi-remote"
     window_title = "MIDI Remote"
     window_width = 500
     window_height = 100
     config_file = "./config.yml"
     css_file = "./style.css"
-    log_format = "%(asctime)s %(levelname)s %(module)s::%(funcName)s(%(lineno)d): %(message)s"
+    log_format = LOG_FORMAT
     log = None
     min_widgets_per_row = 2
-
-    @staticmethod
-    def init_logger():
-        """
-        Create and initialize logger object
-        :return: None
-        """
-        log = logging.getLogger(__name__)
-        log.setLevel(logging.INFO)
-        formatter = logging.Formatter(Defaults.log_format)
-        handler = logging.StreamHandler(sys.stdout)
-        handler.setFormatter(formatter)
-        log.addHandler(handler)
-        Defaults.log = log
-
-    @staticmethod
-    def get_logger():
-        """
-        Returns the logging object
-        :return: logging object
-        """
-        return Defaults.log
-
-def signal_exit(sig, frame):
-    """
-    Perform a clean exit.
-    """
-    Defaults.get_logger().debug("caught signal %s, exiting" % signal.Signals(sig).name)
-    sys.exit(0)
 
 class RowOfGroups:
     def __init__(self, config=None, device=None):
@@ -85,7 +57,6 @@ class MidiCcControl:
     def __init__(self, config=None, device=None):
         if not config or not device:
             raise ValueError("config or device  cannot be None")
-        self.log = Defaults.get_logger()
         self.name = config['name']
         self.cc_num = int(config['cc'])
         self.control_type = config['type']
@@ -115,7 +86,6 @@ class MidiDevice:
     def __init__(self, config=None, override_port=None):
         if not config:
             raise ValueError("config cannot be None")
-        self.log = Defaults.get_logger()
         self.name = config['name']
         if override_port:
             self.port = override_port
@@ -125,9 +95,9 @@ class MidiDevice:
         try:
             self.midi_port = mido.open_output(self.port)
         except Exception as e:
-            self.log.error("could not create midi port: %s. possible ports: %s" % (e, mido.get_output_names()))
+            log.error("could not create midi port: %s. possible ports: %s" % (e, mido.get_output_names()))
             raise IOError(e)
-        self.log.debug("midi device, name=%s channel=%d" % (self.name, self.channel))
+        log.debug("midi device, name=%s channel=%d" % (self.name, self.channel))
 
         self.rows = []
         self.groups = []
@@ -163,7 +133,6 @@ class MidiRemote:
             raise ValueError("window cannot be None")
 
         self.override_port = override_port
-        self.log = Defaults.get_logger()
         self.config = config
         self.app = app
         self.devices = []
@@ -174,19 +143,18 @@ class MidiRemote:
         Creates MIDI devices from config
         """
         for cfg in self.config['devices']:
-            #self.log.debug("device cfg: %s" % cfg)
+            #log.debug("device cfg: %s" % cfg)
             try:
                 device = MidiDevice(config=cfg, override_port=self.override_port)
                 self.devices.append(device)
             except Exception as e:
-                self.log.error("could not create MidiDevice: %s" % e)
+                log.error("could not create MidiDevice: %s" % e)
 
 class DeviceWidget(Gtk.Box):
     def __init__(self, device=None, *args, **kwargs):
         if not device:
             raise ValueError("control cannot be None")
         super().__init__(orientation=Gtk.Orientation.VERTICAL, *args, **kwargs)
-        self.log = Defaults.get_logger()
         self.device = device
         self.set_hexpand(False)
         self.set_vexpand(False)
@@ -203,7 +171,7 @@ class DeviceWidget(Gtk.Box):
         self.cc_value_label = Gtk.Label(label="CC Value")
         self.cc_value_spin_b = Gtk.SpinButton(adjustment=Gtk.Adjustment(value=0, step_increment=1, lower=0, upper=127))
         self.width_label = Gtk.Label(label="Min Width")
-        self.width_spin_b = Gtk.SpinButton(adjustment=Gtk.Adjustment(value=Defaults.min_widgets_per_row, step_increment=1,
+        self.width_spin_b = Gtk.SpinButton(adjustment=Gtk.Adjustment(value=Constants.min_widgets_per_row, step_increment=1,
                                                                      lower=1, upper=20))
 
         self.pc_send_b.connect('clicked', self.on_pc_clicked)
@@ -266,7 +234,7 @@ class RowWidget(Gtk.Expander):
         self.box.set_css_classes(['row_of_groups_box'])
         self.box.set_selection_mode(Gtk.SelectionMode.NONE)
         self.box.set_homogeneous(homogeneous=False)
-        self.box.set_min_children_per_line(Defaults.min_widgets_per_row)
+        self.box.set_min_children_per_line(Constants.min_widgets_per_row)
         #self.box.set_max_children_per_line(10)
         self.box.set_hexpand(False)
         self.box.set_vexpand(False)
@@ -283,7 +251,6 @@ class CcWidget(Gtk.Box):
         if not control:
             raise ValueError("control cannot be None")
         super().__init__(*args, **kwargs)
-        self.log = Defaults.get_logger()
         self.control = control
         self.send_button = Gtk.Button(label=self.control.name)
         self.send_button.connect('clicked', self.on_button_clicked)
@@ -413,7 +380,6 @@ class CcGroupWidget(Gtk.Box):
         if not group:
             raise ValueError("group cannot be None")
         super().__init__(orientation=Gtk.Orientation.VERTICAL, *args, **kwargs)
-        self.log = Defaults.get_logger()
         self.group = group
         self.set_hexpand(False)
         self.set_vexpand(False)
@@ -444,17 +410,16 @@ class MidiRemoteWindow(Gtk.ApplicationWindow):
         if not config:
             raise ValueError("config cannot be None")
         super().__init__(*args, **kwargs)
-        self.log = Defaults.get_logger()
         self.config = config
         self.controller = Gtk.EventControllerKey.new()
         self.controller.connect('key-pressed', self.on_keypress)
         self.add_controller(self.controller)
 
-        self.set_title(Defaults.window_title)
+        self.set_title(Constants.window_title)
         if not width:
-            width = Defaults.window_width
+            width = Constants.window_width
         if not height:
-            height = Defaults.window_height
+            height = Constants.window_height
         self.set_default_size(width, height)
         self.set_resizable(False)
         #self.set_show_menubar(True)
@@ -469,11 +434,11 @@ class MidiRemoteWindow(Gtk.ApplicationWindow):
             self.layout.append(device_box)
 
     def on_keypress(self, controller, keyval, keycode, state):
-        #self.log.debug("keypressed: %s %s %s" % (keyval, keycode, state))
+        #log.debug("keypressed: %s %s %s" % (keyval, keycode, state))
         ctrl_pressed = state & Gdk.ModifierType.CONTROL_MASK
         cmd_pressed = state & Gdk.ModifierType.META_MASK
         if keyval in (ord('q'), ord('Q')) and (ctrl_pressed or cmd_pressed):
-            self.log.debug("QUIT pressed")
+            log.debug("QUIT pressed")
             self.close()
 
 class MidiRemoteApp(Gtk.Application):
@@ -481,34 +446,33 @@ class MidiRemoteApp(Gtk.Application):
         if not config_path:
             raise ValueError("config_path cannot be None")
         super().__init__(*args, **kwargs)
-        self.log = Defaults.get_logger()
 
         try:
             with open(config_path, 'r') as config_file:
                 self.config = yaml.load(config_file, Loader=yaml.SafeLoader)
         except Exception as e:
             err_msg = "Could not load config file %s: %s" % (config_file, e)
-            self.log.critical(err_msg)
+            log.critical(err_msg)
             raise e
-        self.log.debug("loaded config: %s" % self.config)
+        log.debug("loaded config: %s" % self.config)
         self.css_file = css_file
 
         self.connect('activate', self.on_activate)
         self.connect('shutdown', self.on_quit)
 
         if self.css_file and os.path.isfile(self.css_file):
-            self.log.debug("reading css file: %s" % self.css_file)
+            log.debug("reading css file: %s" % self.css_file)
             self.css_provider = Gtk.CssProvider.new()
             try:
                 self.css_provider.load_from_path(self.css_file)
             except Exception as e:
-                self.log.error("could not load CSS: %s" % e)
+                log.error("could not load CSS: %s" % e)
                 self.css_provider = None
 
         try:
             self.remote = MidiRemote(config=self.config, app=self, override_port=override_port)
         except Exception as e:
-            self.log.critical("could not create controller: %s" % e)
+            log.critical("could not create controller: %s" % e)
             raise e
 
     def on_activate(self, app):
@@ -527,7 +491,14 @@ def print_output_ports():
     for p in mido.get_output_names():
         print(p)
 
-if __name__ == "__main__":
+def signal_exit(sig, frame):
+    """
+    Perform a clean exit.
+    """
+    log.debug("caught signal %s, exiting" % signal.Signals(sig).name)
+    sys.exit(0)
+
+def main():
     ## set signal handlers
     signal.signal(signal.SIGINT, signal_exit)
     signal.signal(signal.SIGTERM, signal_exit)
@@ -535,14 +506,11 @@ if __name__ == "__main__":
     ## parse args
     arg_parser = argparse.ArgumentParser(description="MPD Frontend", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     arg_parser.add_argument("-v", "--verbose", action='store_true', help="Turn on verbose output")
-    arg_parser.add_argument("-c", "--config", default=Defaults.config_file, action='store', help="Config file")
-    arg_parser.add_argument("-s", "--css", default=Defaults.css_file, action='store', help="CSS file")
+    arg_parser.add_argument("-c", "--config", default=Constants.config_file, action='store', help="Config file")
+    arg_parser.add_argument("-s", "--css", default=Constants.css_file, action='store', help="CSS file")
     arg_parser.add_argument("-p", "--port", action='store', help="MIDI port")
     arg_parser.add_argument("-l", "--list", action='store_true', help="List available output ports")
     args = arg_parser.parse_args()
-
-    Defaults.init_logger()
-    log = Defaults.get_logger()
 
     if args.verbose:
         log.setLevel(logging.DEBUG)
@@ -556,10 +524,10 @@ if __name__ == "__main__":
         sys.exit(1)
 
     try:
-        app = MidiRemoteApp(config_path=args.config, css_file=args.css, application_id=Defaults.application_id, override_port=args.port)
+        app = MidiRemoteApp(config_path=args.config, css_file=args.css, application_id=Constants.application_id,
+                            override_port=args.port)
     except Exception as e:
         log.critical("could not create application: %s" % e)
-        sys.exit(3)
-
+        sys.exit(2)
     app.run(None)
     sys.exit(0)
