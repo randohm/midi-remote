@@ -1,0 +1,61 @@
+devices:
+  - name: UltraViolet
+    port: UltraViolet
+    channel: 5
+    rows:
+      - name: Controls
+        expand: True
+        groups:
+          - name: Controls
+            controls:
+              - name: On/Off
+                type: toggle
+                cc: 102
+                default: 0
+                values:
+                  on: 127
+                  off: 0
+              - name: Mode
+                type: enum
+                cc: 11
+                default: 1
+                values:
+                  chorus: 1
+                  blend: 2
+                  vibrato: 3
+              - name: Bias
+                type: enum
+                cc: 12
+                default: 2
+                values:
+                  low: 1
+                  mid: 2
+                  high: 3
+              - name: Speed
+                type: continuous
+                cc: 13
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Intensity
+                type: continuous
+                cc: 14
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Volume
+                type: continuous
+                cc: 15
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Expression
+                type: continuous
+                cc: 100
+                default: 0
+                values:
+                  min: 0
+                  max: 127
