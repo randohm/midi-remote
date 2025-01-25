@@ -305,6 +305,7 @@ class CcToggleWidget(CcWidget):
     def __init__(self, control=None, *args, **kwargs):
         super().__init__(control=control, orientation=Gtk.Orientation.VERTICAL, *args, **kwargs)
         self.send_button.set_css_classes(['send_button_toggle'])
+        self.append(self.send_button)
         box = Gtk.Box()
         box.set_css_classes(['toggle_box'])
         self.switch = Gtk.Switch()
@@ -313,7 +314,6 @@ class CcToggleWidget(CcWidget):
         self.switch.connect('notify::active', self.on_switch_activated)
         box.append(self.switch)
         self.append(box)
-        self.append(self.send_button)
 
     def on_switch_activated(self, switch, _gparam):
         if switch.props.active:
@@ -468,7 +468,7 @@ class MidiRemoteApp(Gtk.Application):
             except Exception as e:
                 log.error("could not load CSS: %s" % e)
                 self.css_provider = None
-
+            #log.debug("css provider: %s" % self.css_provider.to_string())
         try:
             self.remote = MidiRemote(config=self.config, app=self, override_port=override_port)
         except Exception as e:
@@ -478,7 +478,7 @@ class MidiRemoteApp(Gtk.Application):
     def on_activate(self, app):
         self.window = MidiRemoteWindow(application=self, config=self.config)
         self.window.display_devices(self.remote.devices)
-        if self.css_provider:
+        if hasattr(self, 'css_provider') and self.css_provider:
             display = Gtk.Widget.get_display(self.window)
             Gtk.StyleContext.add_provider_for_display(display, self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         self.window.present()
@@ -529,5 +529,6 @@ def main():
     except Exception as e:
         log.critical("could not create application: %s" % e)
         sys.exit(2)
+
     app.run(None)
     sys.exit(0)
