@@ -1,0 +1,93 @@
+devices:
+  - name: Graphic EQ
+    port: USB Midi
+    channel: 3
+    rows:
+      - name: Controls
+        groups:
+          - name: Controls
+            controls:
+              - name: On/Off
+                type: toggle
+                cc: 66
+                default: 0
+                values:
+                  on: 127
+                  off: 0
+              - name: Output
+                type: continuous
+                cc: 107
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: 50Hz
+                type: continuous
+                cc: 97
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: 100Hz
+                type: continuous
+                cc: 98
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: 200Hz
+                type: continuous
+                cc: 99
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: 400Hz
+                type: continuous
+                cc: 100
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: 800Hz
+                type: continuous
+                cc: 101
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: 1.5kHz
+                type: continuous
+                cc: 102
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: 2.5kHz
+                type: continuous
+                cc: 103
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: 3.5kHz
+                type: continuous
+                cc: 104
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: 7kHz
+                type: continuous
+                cc: 105
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: 10kHz
+                type: continuous
+                cc: 106
+                default: 64
+                values:
+                  min: 0
+                  max: 127

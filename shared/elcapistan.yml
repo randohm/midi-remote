@@ -1,0 +1,108 @@
+devices:
+  - name: El Capistan
+    port: El Capistan
+    channel: 2
+    rows:
+      - name: Controls
+        expand: True
+        groups:
+          - name: Controls
+            controls:
+              - name: On/Off
+                type: toggle
+                cc: 102
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: Tape Head
+                type: enum
+                cc: 11
+                default: 1
+                values:
+                  fixed: 1
+                  multi: 2
+                  single: 3
+              - name: Mode
+                type: enum
+                cc: 15
+                default: 2
+                values:
+                  A: 1
+                  B: 2
+                  C: 3
+              - name: Time
+                type: continuous
+                cc: 12
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Wow
+                type: continuous
+                cc: 13
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Tape Age
+                type: continuous
+                cc: 14
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Mix
+                type: continuous
+                cc: 16
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Spring
+                type: continuous
+                cc: 17
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+              - name: Repeats
+                type: continuous
+                cc: 18
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+      - name: Live Edit
+        expand: True
+        groups:
+          - name: Live Edit
+            controls:
+              - name: Low End Contour
+                type: continuous
+                cc: 19
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Bias
+                type: continuous
+                cc: 20
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Crinkle
+                type: continuous
+                cc: 21
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Boost/Cut
+                type: continuous
+                cc: 22
+                default: 64
+                values:
+                  min: 0
+                  max: 127

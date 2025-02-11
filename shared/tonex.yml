@@ -1,0 +1,694 @@
+devices:
+  - name: ToneX
+    port: ToneX
+    channel: 6
+    rows:
+      - name: Amp + EQ
+        expand: True
+        min: 2
+        groups:
+          - name: Amp
+            controls:
+              - name: Gain
+                type: continuous
+                cc: 102
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Volume
+                type: continuous
+                cc: 103
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Mix
+                type: continuous
+                cc: 104
+                default: 127
+                values:
+                  min: 0
+                  max: 127
+          - name: EQ
+            controls:
+              - name: Pre/Post
+                type: toggle
+                cc: 30
+                default: 127
+                values:
+                  off: 0
+                  on: 127
+              - name: Bass
+                type: continuous
+                cc: 23
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Bass Hz
+                type: continuous
+                cc: 24
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Mid
+                type: continuous
+                cc: 25
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Mid Q
+                type: continuous
+                cc: 26
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Mid Hz
+                type: continuous
+                cc: 27
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Treble
+                type: continuous
+                cc: 28
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Treble Hz
+                type: continuous
+                cc: 29
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Presence
+                type: continuous
+                cc: 106
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Depth
+                type: continuous
+                cc: 107
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+      - name: Gate + Comp
+        expand: False
+        groups:
+          - name: Noise Gate
+            controls:
+              - name: On/Off
+                type: toggle
+                cc: 14
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: First/Post
+                type: toggle
+                cc: 13
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: Threshold
+                type: continuous
+                cc: 15
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+              - name: Release
+                type: continuous
+                cc: 16
+                default: 4
+                values:
+                  min: 0
+                  max: 127
+              - name: Depth
+                type: continuous
+                cc: 17
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+          - name: Compressor
+            controls:
+              - name: On/Off
+                type: toggle
+                cc: 18
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: Pre/Post
+                type: toggle
+                cc: 22
+                default: 127
+                values:
+                  off: 0
+                  on: 127
+              - name: Threshold
+                type: continuous
+                cc: 19
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+              - name: Gain
+                type: continuous
+                cc: 20
+                default: 96
+                values:
+                  min: 0
+                  max: 127
+              - name: Attack
+                type: continuous
+                cc: 21
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+      - name: Modulation
+        expand: False
+        min: 3
+        groups:
+          - name: Modulation
+            controls:
+              - name: On/Off
+                type: toggle
+                cc: 32
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: Pre/Post
+                type: toggle
+                cc: 31
+                default: 127
+                values:
+                  off: 0
+                  on: 127
+              - name: Type
+                type: enum
+                cc: 33
+                default: 0
+                values:
+                  chorus: 0
+                  tremolo: 1
+                  phaser: 2
+                  flanger: 3
+                  rotary: 4
+          - name: Chorus
+            controls:
+              - name: Sync
+                type: toggle
+                cc: 34
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: Rate
+                type: continuous
+                cc: 35
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Depth
+                type: continuous
+                cc: 36
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Level
+                type: continuous
+                cc: 37
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+          - name: Tremolo
+            controls:
+              - name: Sync
+                type: toggle
+                cc: 38
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: Rate
+                type: continuous
+                cc: 39
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Shape
+                type: continuous
+                cc: 40
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Spread
+                type: continuous
+                cc: 41
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+              - name: Level
+                type: continuous
+                cc: 42
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+          - name: Phaser
+            controls:
+              - name: Sync
+                type: toggle
+                cc: 43
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: Rate
+                type: continuous
+                cc: 44
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Depth
+                type: continuous
+                cc: 45
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Level
+                type: continuous
+                cc: 46
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+          - name: Flanger
+            controls:
+              - name: Sync
+                type: toggle
+                cc: 47
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: Rate
+                type: continuous
+                cc: 48
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Depth
+                type: continuous
+                cc: 49
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Feedback
+                type: continuous
+                cc: 50
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Level
+                type: continuous
+                cc: 51
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+          - name: Rotary
+            controls:
+              - name: Sync
+                type: toggle
+                cc: 52
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: Speed
+                type: continuous
+                cc: 53
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Radius
+                type: continuous
+                cc: 54
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Spread
+                type: continuous
+                cc: 55
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Level
+                type: continuous
+                cc: 56
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+      - name: Delay
+        expand: False
+        min: 3
+        groups:
+          - name: Delay
+            controls:
+              - name: On/Off
+                type: toggle
+                cc: 2
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: Pre/Post
+                type: toggle
+                cc: 1
+                default: 127
+                values:
+                  off: 0
+                  on: 127
+              - name: Type
+                type: enum
+                cc: 3
+                default: 0
+                values:
+                  digital: 0
+                  tape: 1
+          - name: Digital Delay
+            controls:
+              - name: Sync
+                type: toggle
+                cc: 4
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: Mode
+                type: enum
+                cc: 7
+                default: 0
+                values:
+                  normal: 0
+                  ping-pong: 127
+              - name: Time
+                type: continuous
+                cc: 5
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Feedback
+                type: continuous
+                cc: 6
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Mix
+                type: continuous
+                cc: 8
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+          - name: Tape Delay
+            controls:
+              - name: Sync
+                type: toggle
+                cc: 91
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: Mode
+                type: enum
+                cc: 94
+                default: 0
+                values:
+                  normal: 0
+                  ping-pong: 127
+              - name: Time
+                type: continuous
+                cc: 92
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Feedback
+                type: continuous
+                cc: 93
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Mix
+                type: continuous
+                cc: 95
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+      - name: Reverb
+        expand: True
+        min: 7
+        groups:
+          - name: Reverb
+            controls:
+              - name: On/Off
+                type: toggle
+                cc: 75
+                default: 0
+                values:
+                  off: 0
+                  on: 127
+              - name: Post/Last
+                type: toggle
+                cc: 84
+                default: 127
+                values:
+                  off: 0
+                  on: 127
+              - name: Type
+                type: enum
+                cc: 85
+                default: 0
+                values:
+                  spring1: 0
+                  spring2: 1
+                  spring3: 2
+                  spring4: 3
+                  room: 4
+                  plate: 5
+          - name: Spring 1 Reverb
+            controls:
+              - name: Time
+                type: continuous
+                cc: 59
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Pre
+                type: continuous
+                cc: 60
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+              - name: Color
+                type: continuous
+                cc: 61
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Mix
+                type: continuous
+                cc: 62
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+          - name: Spring 2 Reverb
+            controls:
+              - name: Time
+                type: continuous
+                cc: 63
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Pre
+                type: continuous
+                cc: 64
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+              - name: Color
+                type: continuous
+                cc: 65
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Mix
+                type: continuous
+                cc: 66
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+          - name: Spring 3 Reverb
+            controls:
+              - name: Time
+                type: continuous
+                cc: 67
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Pre
+                type: continuous
+                cc: 68
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+              - name: Color
+                type: continuous
+                cc: 69
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Mix
+                type: continuous
+                cc: 70
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+          - name: Spring 4 Reverb
+            controls:
+              - name: Time
+                type: continuous
+                cc: 80
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Pre
+                type: continuous
+                cc: 81
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+              - name: Color
+                type: continuous
+                cc: 82
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Mix
+                type: continuous
+                cc: 83
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+          - name: Room Reverb
+            controls:
+              - name: Time
+                type: continuous
+                cc: 71
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Pre
+                type: continuous
+                cc: 72
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+              - name: Color
+                type: continuous
+                cc: 73
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Mix
+                type: continuous
+                cc: 74
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+          - name: Plate Reverb
+            controls:
+              - name: Time
+                type: continuous
+                cc: 76
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Pre
+                type: continuous
+                cc: 77
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+              - name: Color
+                type: continuous
+                cc: 78
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Mix
+                type: continuous
+                cc: 79
+                default: 0
+                values:
+                  min: 0
+                  max: 127
