@@ -1,0 +1,245 @@
+devices:
+  - name: UAFX Enigmatic
+    port: Enigmatic
+    channel: 4
+    rows:
+      - name: Enigmatic
+        expand: True
+        groups:
+          - name: Controls
+            controls:
+              - name: FS Left
+                type: toggle
+                cc: 12
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: FS Right
+                type: toggle
+                cc: 13
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Cab Up
+                type: toggle
+                cc: 14
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Cab Down
+                type: toggle
+                cc: 15
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Store
+                type: toggle
+                cc: 16
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Model Select
+                type: enum
+                cc: 17
+                default: 0
+                values:
+                  Rock: 0
+                  Jazz: 1
+                  Custom: 2
+              - name: Cab Select
+                type: enum
+                cc: 18
+                default: 0
+                values:
+                  1x12 Black GB25: 0
+                  2x12 Boutique D65: 1
+                  2x12 Brute: 2
+                  4x12 UK V30: 3
+                  2x12 JBF120: 4
+                  1x12 Black EV12: 5
+                  4x12 Stripped GB: 6
+                  1x12 JBG125: 7
+                  2x12 D EV12: 8
+                  No Cab: 9
+              - name: Bypass
+                type: enum
+                cc: 19
+                default: 0
+                values:
+                  Bypass: 0
+                  LeftOn: 1
+                  RightOn: 2
+              - name: Channel
+                type: enum
+                cc: 20
+                default: 0
+                values:
+                  Normal: 0
+                  FET: 1
+              - name: Power Supply
+                type: enum
+                cc: 21
+                default: 0
+                values:
+                  50W high plate: 0
+                  100W low plate squishy PS: 1
+                  100W high plate stiff PS: 2
+                  100W low plate very stiff PS: 3
+              - name: Overdrive Enable
+                type: toggle
+                cc: 24
+                default: 0
+                values:
+                  on: 1
+                  off: 0
+              - name: Deep/Mid
+                type: toggle
+                cc: 35
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Bright
+                type: enum
+                cc: 36
+                default: 0
+                values:
+                  None: 0
+                  150pf: 1
+                  195pf: 2
+                  300pf: 3
+              - name: Tonestack
+                type: enum
+                cc: 37
+                default: 0
+                values:
+                  Classic: 0
+                  Skyline: 1
+              - name: Boost Enable
+                type: toggle
+                cc: 40
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+          - name: Knobs
+            controls:
+              - name: Output
+                type: continuous
+                cc: 7
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Volume
+                type: continuous
+                cc: 22
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Overdrive
+                type: continuous
+                cc: 23
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Ratio
+                type: continuous
+                cc: 25
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Master
+                type: continuous
+                cc: 26
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: FET Trim
+                type: continuous
+                cc: 27
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: OD Trim
+                type: continuous
+                cc: 28
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Room
+                type: continuous
+                cc: 30
+                default: 0
+                values:
+                  min: 0
+                  max: 127
+              - name: Bass
+                type: continuous
+                cc: 31
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Middle
+                type: continuous
+                cc: 32
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Treble
+                type: continuous
+                cc: 33
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Presence
+                type: continuous
+                cc: 34
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+          - name: HRM
+            controls:
+              - name: HRM Enable
+                type: toggle
+                cc: 50
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: HRM Bass
+                type: continuous
+                cc: 51
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: HRM Middle
+                type: continuous
+                cc: 52
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: HRM Treble
+                type: continuous
+                cc: 53
+                default: 64
+                values:
+                  min: 0
+                  max: 127
