@@ -1,0 +1,138 @@
+devices:
+  - name: UAFX Galaxy
+    port: Galaxy
+    channel: 8
+    rows:
+      - name: Galaxy
+        expand: True
+        groups:
+          - name: Controls
+            controls:
+              - name: Bypass
+                type: toggle
+                cc: 19
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: FS Left
+                type: toggle
+                cc: 12
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: FS Right
+                type: toggle
+                cc: 13
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Head Up
+                type: toggle
+                cc: 14
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Head Down
+                type: toggle
+                cc: 15
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Store
+                type: toggle
+                cc: 16
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Head Select
+                type: enum
+                cc: 18
+                default: 0
+                values:
+                  Dotted 1/16: 0
+                  Dotted 1/8: 1
+                  1/4: 2
+                  Dotted 1/16 + dotted 1/8: 3
+                  Dotted 1/8 + 1/4: 4
+                  Dotted 1/16 + 1/4: 5
+                  Dotted 1/16 + dotted 1/8 + 1/4: 6
+          - name: Delay
+            controls:
+              - name: Echo Rate
+                type: continuous
+                cc: 23
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Echo Vol
+                type: continuous
+                cc: 22
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Feedback
+                type: continuous
+                cc: 24
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Input Vol
+                type: continuous
+                cc: 26
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Tape Age
+                type: continuous
+                cc: 27
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Treble
+                type: continuous
+                cc: 29
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Bass
+                type: continuous
+                cc: 28
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+          - name: Reverb
+            controls:
+              - name: Reverb Bypass
+                type: toggle
+                cc: 20
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Dwell
+                type: continuous
+                cc: 31
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Reverb Vol
+                type: continuous
+                cc: 30
+                default: 64
+                values:
+                  min: 0
+                  max: 127

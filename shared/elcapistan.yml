@@ -106,3 +106,10 @@ devices:
                 values:
                   min: 0
                   max: 127
+              - name: Midi Clock
+                type: toggle
+                cc: 63
+                default: 0
+                values:
+                  off: 0
+                  on: 127
