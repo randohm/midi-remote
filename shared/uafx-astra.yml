@@ -1,0 +1,114 @@
+devices:
+  - name: UAFX Astra
+    port: Astra
+    channel: 11
+    rows:
+      - name: Astra
+        expand: True
+        groups:
+          - name: Switches
+            controls:
+              - name: A / B
+                type: enum
+                cc: 17
+                default: 0
+                values:
+                  A: 0
+                  B: 1
+              - name: Bypass
+                type: enum
+                cc: 19
+                default: 0
+                values:
+                  bypass: 0
+                  left on: 1
+                  right on: 2
+              - name: FS Left
+                type: toggle
+                cc: 12
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: FS Right
+                type: toggle
+                cc: 13
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Effect Up
+                type: toggle
+                cc: 14
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Effect Down
+                type: toggle
+                cc: 15
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Store
+                type: toggle
+                cc: 16
+                default: 0
+                values:
+                  off: 0
+                  on: 1
+              - name: Effect Select
+                type: enum
+                cc: 18
+                default: 0
+                values:
+                  Chorus Brigade: 0
+                  Flanger Dblr: 1
+                  Trem 65: 2
+                  Phaser X90: 3
+                  Dharma Trem 61: 4
+              - name: Mode
+                type: enum
+                cc: 27
+                default: 0
+                values:
+                  Left: 0
+                  Right: 1
+          - name: Dials
+            controls:
+              - name: Depth
+                type: continuous
+                cc: 23
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Intensity
+                type: continuous
+                cc: 24
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Shade
+                type: continuous
+                cc: 25
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Shape
+                type: continuous
+                cc: 26
+                default: 64
+                values:
+                  min: 0
+                  max: 127
+              - name: Speed
+                type: continuous
+                cc: 22
+                default: 64
+                values:
+                  min: 0
+                  max: 127
